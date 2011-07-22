@@ -1,0 +1,38 @@
+"""
+SConstruct
+
+Created by Andres Gonzalez Mancera on 2011-07-07.
+Copyright (c) 2011 Universidad de los Andes. All rights reserved.
+"""
+
+import os
+num_cpu = int(os.environ.get('NUM_CPU', 4))
+SetOption('num_jobs', num_cpu)
+print "running with -j", GetOption('num_jobs')
+
+Repository('../src')
+
+debug = ARGUMENTS.get('debug', 0)
+prof = ARGUMENTS.get('prof', 0)
+
+if int(debug):
+   env = Environment(CXX = 'g++',
+                  CXXFLAGS = '-debug -O0')
+# elif int(prof):
+#    env = Environment(CXX = 'g++',
+#                   CXXFLAGS = '-profile-functions -Wl,-macosx_version_min,10.6')
+else:
+   env = Environment(CXX = 'g++',
+                        CXXFLAGS = '-O3')
+
+# env.Append(LINKFLAGS='-Wl,-macosx_version_min,10.6');
+
+common_sources = Split("""fluid.cpp
+                          mesh.cpp
+                          ibm.cpp
+                          elemento.cpp
+                          fronteras.cpp""")
+
+print "CXX is:", env.subst('$CXXCOM')                          
+env.Program('poiseuille',['Poiseuille.cpp']+common_sources,
+            CPPPATH = '../include')
