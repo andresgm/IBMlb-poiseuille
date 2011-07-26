@@ -23,7 +23,7 @@ if int(debug):
 #                   CXXFLAGS = '-profile-functions -Wl,-macosx_version_min,10.6')
 else:
    env = Environment(CXX = 'g++',
-                        CXXFLAGS = '-O3')
+                        CXXFLAGS = '-fast')
 
 # env.Append(LINKFLAGS='-Wl,-macosx_version_min,10.6');
 
